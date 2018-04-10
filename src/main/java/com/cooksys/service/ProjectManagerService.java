@@ -1,6 +1,9 @@
 package com.cooksys.service;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
@@ -27,12 +30,12 @@ public class ProjectManagerService {
 	}
 
 	public boolean has(Long id) {
-		return repo.exists(id);
+		return repo.existsById(id);
 	}
 
 	public ProjectManagerDto get(Long id) {
 		mustExist(id);
-		return mapper.toDto(repo.findOne(id));
+		return mapper.toDto(repo.findById(id).get());
 	}
 
 	public Long post(ProjectManagerDto projectManagerDto) {
@@ -53,6 +56,16 @@ public class ProjectManagerService {
 
 	public void delete(Long id) {
 		mustExist(id);
-		repo.delete(id);
+		repo.deleteById(id);
+	}
+	public List<ProjectManagerDto> getOverdueProjectsByManager(Date dueDate){
+		List<ProjectManagerDto> results = new ArrayList<>();
+		for (ProjectManagerDto manager : repo.findByProjectsDueDateLessThanOrderByProjectsDesc(dueDate).stream().map(mapper::toDto).collect(Collectors.toList())) {
+			manager.setNumdue(manager.getProjects().size());
+			results.add(manager);
+		}
+		return results;
+		
+		
 	}
 }

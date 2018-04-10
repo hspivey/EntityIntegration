@@ -1,5 +1,7 @@
 package com.cooksys.mapper;
 
+import java.util.Optional;
+
 import org.mapstruct.Mapper;
 
 import com.cooksys.dto.ProjectManagerDto;
@@ -11,5 +13,7 @@ public interface ProjectManagerMapper {
 	ProjectManagerDto toDto(ProjectManager entity);
 
 	ProjectManager toEntity(ProjectManagerDto dto);
+
+	//ProjectManagerDto toDto(Optional<ProjectManager> findById);
 
 }

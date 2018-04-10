@@ -1,5 +1,7 @@
 package com.cooksys.entity;
 
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -14,8 +16,13 @@ public class Project implements BaseEntity<Long> {
 	@GeneratedValue
 	private Long id;
 	
+	private Date startDate;
+	
+	private Date dueDate;
+	
+	
 	@ManyToOne
-	private ProjectManager manager;
+	private ProjectManager projectManager;
 
 	public Long getId() {
 		return id;
@@ -26,11 +33,27 @@ public class Project implements BaseEntity<Long> {
 	}
 
 	public ProjectManager getManager() {
-		return manager;
+		return projectManager;
 	}
 
-	public void setManager(ProjectManager manager) {
-		this.manager = manager;
+	public void setManager(ProjectManager projectManager) {
+		this.projectManager = projectManager;
+	}
+
+	public Date getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
+
+	public Date getDueDate() {
+		return dueDate;
+	}
+
+	public void setDueDate(Date dueDate) {
+		this.dueDate = dueDate;
 	}
 
 	@Override

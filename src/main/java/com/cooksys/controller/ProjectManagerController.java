@@ -1,9 +1,12 @@
 package com.cooksys.controller;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cooksys.dto.ProjectManagerDto;
@@ -29,17 +33,22 @@ public class ProjectManagerController {
 	public ProjectManagerController(ProjectManagerService projectManagerService) {
 		this.projectManagerService = projectManagerService;
 	}
-	
+
 	@GetMapping
 	@ApiOperation(value = "", nickname = "getAllProjectManagers")
-	public List<ProjectManagerDto> getAll() {
-		return projectManagerService.getAll();
+	public List<ProjectManagerDto> getAll(
+			@RequestParam(value = "date", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date dueDate) {
+		if (dueDate == null) {
+			return projectManagerService.getAll();
+		} else {
+			return projectManagerService.getOverdueProjectsByManager(dueDate);
+		}
 	}
 
 	@RequestMapping(method = RequestMethod.HEAD, value = "{id}")
 	@ApiOperation(value = "", nickname = "projectManagerExistsForId")
 	public void has(@PathVariable Long id, HttpServletResponse httpResponse) {
-		if(!projectManagerService.has(id))
+		if (!projectManagerService.has(id))
 			httpResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
 	}
 
@@ -56,17 +65,19 @@ public class ProjectManagerController {
 		httpResponse.setStatus(HttpServletResponse.SC_CREATED);
 		return id;
 	}
-	
+
 	@PutMapping("{id}")
 	@ApiOperation(value = "", nickname = "putProjectManagerWithId")
-	public void put(@PathVariable Long id, @RequestBody @Validated ProjectManagerDto projectManagerDto, HttpServletResponse httpResponse) {
+	public void put(@PathVariable Long id, @RequestBody @Validated ProjectManagerDto projectManagerDto,
+			HttpServletResponse httpResponse) {
 		projectManagerService.put(id, projectManagerDto);
 	}
-	
+
 	@DeleteMapping("{id}")
 	@ApiOperation(value = "", nickname = "deleteProjectManagerAtId")
 	public void delete(@PathVariable Long id, HttpServletResponse httpResponse) {
 		projectManagerService.delete(id);
 	}
 
+	
 }

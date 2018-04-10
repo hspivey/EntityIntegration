@@ -5,11 +5,13 @@ import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.NamedEntityGraph;
 import javax.persistence.OneToMany;
-
+import javax.persistence.NamedAttributeNode;
 import com.cooksys.dto.datatype.BaseEntity;
 
 @Entity
+@NamedEntityGraph(name = "projectManager-projects-entity-graph", attributeNodes = @NamedAttributeNode("projects"))
 public class ProjectManager implements BaseEntity<Long>{
 	
 	@Id
@@ -20,7 +22,7 @@ public class ProjectManager implements BaseEntity<Long>{
 	
 	private String lastName;
 	
-	@OneToMany(mappedBy = "manager")
+	@OneToMany(mappedBy = "projectManager")
 	private Set<Project> projects;
 
 	public Long getId() {

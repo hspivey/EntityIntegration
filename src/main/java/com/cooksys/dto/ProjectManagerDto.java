@@ -14,6 +14,8 @@ public class ProjectManagerDto {
 	private String lastName;
 	
 	private Set<Reference<Project, Long>> projects;
+	
+	private Integer numdue;
 
 	public Long getId() {
 		return id;
@@ -38,6 +40,7 @@ public class ProjectManagerDto {
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
+	
 
 	public Set<Reference<Project, Long>> getProjects() {
 		return projects;
@@ -45,6 +48,14 @@ public class ProjectManagerDto {
 
 	public void setProjects(Set<Reference<Project, Long>> projects) {
 		this.projects = projects;
+	}
+	
+	public Integer getNumdue() {
+		return numdue;
+	}
+
+	public void setNumdue(int numdue) {
+		this.numdue = numdue;
 	}
 
 	@Override
